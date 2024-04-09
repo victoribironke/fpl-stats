@@ -6,7 +6,7 @@ import { loginUser } from "@/utils/firebase";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
 
-// edit head template
+// edit head template and set security
 const Home = () => {
   const setUser = useSetRecoilState(user_details);
 
