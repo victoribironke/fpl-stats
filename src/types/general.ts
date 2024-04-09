@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ModalProps = {
   header: string;
   dismiss: () => void;
