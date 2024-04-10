@@ -12,8 +12,8 @@ const Dashboard = () => {
       try {
         const res = await (
           await fetch(
-            `https://fpl-stats-api.vercel.app/api/get-manager-history?team_id=10416894`
-            // { mode: "no-cors" }
+            `https://fpl-stats-api.vercel.app/api/get-manager-history?team_id=10416894`,
+            { mode: "no-cors" }
           )
         ).json();
 
