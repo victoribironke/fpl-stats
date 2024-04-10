@@ -12,6 +12,7 @@ import { doc, getDoc } from "firebase/firestore";
 export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
   return function CheckIfTheUserIsLoggedIn(props: object) {
     const [isLoading, setIsLoading] = useState(true);
+    const setUser = useSetRecoilState(user_details);
     const router = useRouter();
 
     useEffect(() => {
@@ -21,9 +22,18 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
         if (user === null) {
           router.push(PAGES.home);
           return;
-        }
+        } else {
+          getDoc(doc(db, "users", user.uid)).then((u) => {
+            setUser({
+              email: user.email!,
+              name: user.displayName!,
+              uid: user.uid,
+              team_id: u.data()!.team_id,
+            });
 
-        setIsLoading(false);
+            setIsLoading(false);
+          });
+        }
       });
 
       return unsub;

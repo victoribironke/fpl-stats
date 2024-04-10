@@ -1,51 +1,67 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
-import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
-import { useGetManagerHistory } from "@/hooks/dashboard";
 import { signOutUser } from "@/utils/firebase";
+import { useEffect } from "react";
 
 const Dashboard = () => {
-  const { data, error, isLoading } = useGetManagerHistory();
-  console.log(data, error);
+  // const { data, error, isLoading } = useGetManagerHistory();
+  // console.log(data, error?.message);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await (
+          await fetch(
+            `https://fpl-stats-api.vercel.app/api/get-manager-history?team_id=10416894`
+            // { mode: "no-cors" }
+          )
+        ).json();
+
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
 
   return (
     <>
       <HeadTemplate title="Dashboard" />
 
-      {isLoading ? (
+      {/* {isLoading ? (
         <PageLoader type="small" />
-      ) : (
-        <>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <div>Dashboard</div>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-          <button onClick={signOutUser}>Sign out</button>
-        </>
-      )}
+      ) : ( */}
+      <>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <div>Dashboard</div>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+        <button onClick={signOutUser}>Sign out</button>
+      </>
+      {/* )} */}
     </>
   );
 };
