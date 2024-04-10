@@ -13,7 +13,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Create a client
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false, refetchInterval: 10000 },
+  },
 });
 
 const bg = Bricolage_Grotesque({ subsets: ["latin"], display: "swap" });

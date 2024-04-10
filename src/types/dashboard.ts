@@ -1,4 +1,5 @@
 import React from "react";
+import { IconType } from "react-icons";
 
 export type DashboardTemplateProps = {
   children: React.ReactNode;
@@ -32,4 +33,10 @@ export type History = {
     time: string;
     event: number;
   }[];
+};
+
+export type TopStatsCardProps = {
+  icon: IconType;
+  title: string;
+  value: string | number;
 };
