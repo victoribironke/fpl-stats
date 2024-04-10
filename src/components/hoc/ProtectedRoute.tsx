@@ -1,10 +1,12 @@
 import { PAGES } from "@/constants/pages";
-import { auth } from "@/services/firebase";
-// import { getCurrentUser } from "@/utils/firebase";
+import { auth, db } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { useState, useEffect, JSX } from "react";
 import PageLoader from "../general/PageLoader";
 import { onAuthStateChanged } from "firebase/auth";
+import { user_details } from "@/atoms/atoms";
+import { useSetRecoilState } from "recoil";
+import { doc, getDoc } from "firebase/firestore";
 
 // Check if user is logged in
 export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
@@ -39,6 +41,7 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
 export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
   return function StopLoggedInUsersAccessToAuthModals(props: object) {
     const [isLoading, setIsLoading] = useState(true);
+    const setUser = useSetRecoilState(user_details);
     const router = useRouter();
 
     useEffect(() => {
@@ -46,10 +49,17 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
         setIsLoading(true);
 
         if (user) {
-          setTimeout(() => {
+          getDoc(doc(db, "users", user.uid)).then((u) => {
+            setUser({
+              email: user.email!,
+              name: user.displayName!,
+              uid: user.uid,
+              team_id: u.data()!.team_id,
+            });
+
             router.push(PAGES.dashboard);
             return;
-          }, 500);
+          });
         }
 
         setIsLoading(false);

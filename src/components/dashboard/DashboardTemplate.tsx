@@ -1,21 +1,21 @@
-import { DashboardTemplateProps } from "@/types/dashboard";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { DashboardTemplateProps, User } from "@/types/dashboard";
+import { user_details } from "@/atoms/atoms";
+import { useRecoilValue } from "recoil";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
+  const { name } = useRecoilValue(user_details) as User;
+
   return (
     <>
-      <section className="w-full min-h-screen flex">
-        <div className="w-full p-2 sm:px-2">
-          <div className="w-full mb-2 rounded-lg bg-white px-4 py-2 sm:hidden flex justify-end">
-            <RxHamburgerMenu
-              className="text-xl cursor-pointer"
-              // onClick={toggleShow}
-            />
+      <section className="w-full min-h-screen flex items-center flex-col">
+        <div className="w-full bg-white border-b p-4 flex items-center justify-center">
+          <div className="w-full max-w-[1280px]">
+            <button className="bg-gray-100 py-1 px-3 rounded-md">{name}</button>
           </div>
+        </div>
 
-          <div className="w-full rounded-lg bg-white p-4 h-[calc(100vh-4rem)] sm:h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
-            {children}
-          </div>
+        <div className="w-full bg-gray-100 min-h-[calc(100vh-4rem)] p-4 overflow-scroll flex items-center flex-col">
+          <div className="w-full max-w-[1280px] min-h-full">{children}</div>
         </div>
       </section>
     </>
