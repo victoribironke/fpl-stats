@@ -10,7 +10,7 @@ export const useGetManagerHistory = () => {
     queryKey: ["getManagerHistory"],
     queryFn: () =>
       fetch(`https://fantasy.premierleague.com/api/entry/${team_id}/history/`, {
-        // mode: "no-cors",
+        mode: "no-cors",
       })
         .then((res) => res.json())
         .then((data) => data as History),
