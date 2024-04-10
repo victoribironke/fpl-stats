@@ -1,4 +1,4 @@
-import { DashboardTemplateProps, User } from "@/types/dashboard";
+import { DashboardTemplateProps } from "@/types/dashboard";
 import { user_details } from "@/atoms/atoms";
 import { useRecoilValue } from "recoil";
 
