@@ -6,7 +6,8 @@ import { loginUser } from "@/utils/firebase";
 import toast from "react-hot-toast";
 import { useSetRecoilState } from "recoil";
 
-// edit head template and set security
+// edit head template and set security rules
+// stop gw picks hooks from being static
 const Home = () => {
   const setUser = useSetRecoilState(user_details);
 

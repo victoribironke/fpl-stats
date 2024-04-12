@@ -26,6 +26,7 @@ export const loginUser = async () => {
       name: user.user.displayName,
       uid: user.user.uid,
       team_id: "",
+      date_registered: new Date().toISOString(),
     };
 
     if (!u.exists()) {

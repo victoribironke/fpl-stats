@@ -14,7 +14,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { refetchOnWindowFocus: false, refetchInterval: 10000 },
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchInterval: 10000,
+    },
   },
 });
 

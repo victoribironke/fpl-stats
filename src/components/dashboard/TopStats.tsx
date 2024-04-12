@@ -1,16 +1,14 @@
-import { useGetManagerHistory } from "@/hooks/dashboard";
-import PageLoader from "../general/PageLoader";
 import { History, TopStatsCardProps } from "@/types/dashboard";
 import { getTopStats } from "@/utils/helpers";
+import { gameweek } from "@/atoms/atoms";
+import { useRecoilValue } from "recoil";
 
-const TopStats = () => {
-  const { data, isLoading } = useGetManagerHistory();
-
-  if (isLoading) return <PageLoader type="small" />;
+const TopStats = ({ data }: { data: History }) => {
+  const gw = useRecoilValue(gameweek);
 
   return (
     <div className="w-full flex items-center justify-center sm:justify-start gap-4 flex-wrap">
-      {getTopStats(data as History).map((s, i) => (
+      {getTopStats(data, gw).map((s, i) => (
         <Card icon={s.icon} title={s.title} value={s.value} key={i} />
       ))}
     </div>
