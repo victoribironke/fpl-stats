@@ -1,12 +1,20 @@
-import { general_data, player_summary } from "@/atoms/atoms";
+import {
+  gameweek,
+  general_data,
+  player_summary,
+  user_details,
+} from "@/atoms/atoms";
 import { useGetGWPicks } from "@/hooks/dashboard";
 import { GeneralData } from "@/types/dashboard";
 import { classNames, getElementDetails } from "@/utils/helpers";
 import { IoIosArrowUp } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import PageLoader from "../general/PageLoader";
 
 const GWPicksTable = () => {
-  const { data, isLoading } = useGetGWPicks();
+  const gw = useRecoilValue(gameweek);
+  const user = useRecoilValue(user_details);
+  const { data, isLoading } = useGetGWPicks(user!.team_id, gw);
   const setShowPlayerSummary = useSetRecoilState(player_summary);
   const generalData = useRecoilValue(general_data) as GeneralData;
 
@@ -41,9 +49,9 @@ const GWPicksTable = () => {
               getElementDetails(generalData, data, p.element);
             const actual_points =
               data.active_chip === "3xc"
-                ? parseInt(points) * 3
+                ? parseInt(points ?? "0") * 3
                 : p.is_captain
-                ? parseInt(points) * 2
+                ? parseInt(points ?? "0") * 2
                 : points;
 
             return (

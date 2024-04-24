@@ -1,4 +1,4 @@
-import { gameweeks } from "@/atoms/atoms";
+import { gameweeks, user_details } from "@/atoms/atoms";
 import GWHistory from "@/components/dashboard/GWHistory";
 import GWPicksTable from "@/components/dashboard/GWPicksTable";
 import TopStats from "@/components/dashboard/TopStats";
@@ -8,10 +8,11 @@ import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { useGetManagerHistory } from "@/hooks/dashboard";
 import { History } from "@/types/dashboard";
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetManagerHistory();
+  const user = useRecoilValue(user_details);
+  const { data, isLoading } = useGetManagerHistory(user!.team_id);
   const setGameweeks = useSetRecoilState(gameweeks);
 
   useEffect(() => {
@@ -25,6 +26,22 @@ const Dashboard = () => {
   }, [data]);
 
   if (isLoading) return <PageLoader type="small" />;
+
+  // useEffect(() => {
+  //   fetch(
+  //     "https://fpl-stats-api.vercel.app/api/hello",
+  //     // "http://localhost:3001/api/hello",
+  //     {
+  //       headers: {
+  //         url: "https://fantasy.premierleague.com/api/bootstrap-static/",
+  //       },
+  //       mode: "no-cors",
+  //     }
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data))
+  //     .catch((e) => console.warn(e));
+  // }, []);
 
   return (
     <>

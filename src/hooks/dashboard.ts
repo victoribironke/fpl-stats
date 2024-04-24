@@ -9,14 +9,18 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 
-export const useGetManagerHistory = () => {
-  const user = useRecoilValue(user_details);
-  const url = ENDPOINTS.history(user!.team_id);
+// const MAIN_URL = "https://fpl-stats-api.vercel.app/api/hello/";
+const MAIN_URL = "https://fpl-stats-api.netlify.app/api/hello/";
+
+export const useGetManagerHistory = (team_id: string) => {
+  const url = ENDPOINTS.history(team_id);
 
   const { error, data, isLoading } = useQuery({
     queryKey: ["getManagerHistory"],
     queryFn: async () => {
-      const data: History = await (await fetch(url)).json();
+      const data: History = await (
+        await fetch(MAIN_URL, { headers: { url }, mode: "no-cors" })
+      ).json();
 
       return data;
     },
@@ -25,21 +29,21 @@ export const useGetManagerHistory = () => {
   return { error, data, isLoading };
 };
 
-export const useGetGWPicks = () => {
-  const user = useRecoilValue(user_details);
-  const gw = useRecoilValue(gameweek);
-  const url = ENDPOINTS.gw_picks(user!.team_id, gw);
+export const useGetGWPicks = (team_id: string, gw: string) => {
+  const url = ENDPOINTS.gw_picks(team_id, gw);
 
-  const { error, data, isLoading } = useQuery({
+  const { error, data, isLoading, isFetching } = useQuery({
     queryKey: ["getGWPicks"],
     queryFn: async () => {
-      const data: GWPicks = await (await fetch(url)).json();
+      const data: GWPicks = await (
+        await fetch(MAIN_URL, { headers: { url }, mode: "no-cors" })
+      ).json();
 
       return data;
     },
   });
 
-  return { error, data, isLoading };
+  return { error, data, isLoading, isFetching };
 };
 
 export const useGetGeneralData = () => {
@@ -48,7 +52,9 @@ export const useGetGeneralData = () => {
   const { error, data, isLoading } = useQuery({
     queryKey: ["getGeneralData"],
     queryFn: async () => {
-      const data: GeneralData = await (await fetch(url)).json();
+      const data: GeneralData = await (
+        await fetch(MAIN_URL, { headers: { url }, mode: "no-cors" })
+      ).json();
 
       return data;
     },
@@ -63,7 +69,9 @@ export const useGetPlayerSummary = (id: string) => {
   const { error, data, isLoading } = useQuery({
     queryKey: ["getPlayerSummary"],
     queryFn: async () => {
-      const data: PlayerSummary = await (await fetch(url)).json();
+      const data: PlayerSummary = await (
+        await fetch(MAIN_URL, { headers: { url }, mode: "no-cors" })
+      ).json();
 
       return data;
     },

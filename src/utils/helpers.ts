@@ -71,7 +71,7 @@ export const getElementDetails = (
   const position =
     positions[elementObj?.element_type ? elementObj.element_type - 1 : 4];
   const team = data.teams.find((t) => t.id === elementObj?.team)?.name;
-  const points = formatNumber(elementObj?.event_points ?? 0);
+  const points = elementObj?.event_points.toString();
   const subbed_in = (elementsSubbedIn ?? []).includes(element);
   const subbed_out = (elementsSubbedOut ?? []).includes(element);
 
