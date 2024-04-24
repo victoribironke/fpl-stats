@@ -1,4 +1,3 @@
-import { gameweek, user_details } from "@/atoms/atoms";
 import { ENDPOINTS } from "@/constants/endpoints";
 import {
   GWPicks,
@@ -7,7 +6,6 @@ import {
   PlayerSummary,
 } from "@/types/dashboard";
 import { useQuery } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
 
 // const MAIN_URL = "https://fpl-stats-api.vercel.app/api/hello/";
 const MAIN_URL = "https://fpl-stats-api.netlify.app/api/hello/";

@@ -9,7 +9,6 @@ import { GeneralData } from "@/types/dashboard";
 import { classNames, getElementDetails } from "@/utils/helpers";
 import { IoIosArrowUp } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import PageLoader from "../general/PageLoader";
 
 const GWPicksTable = () => {
   const gw = useRecoilValue(gameweek);
