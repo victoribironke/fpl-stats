@@ -18,7 +18,7 @@ import PlayerSummaryComp from "./PlayerSummaryComp";
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const user = useRecoilValue(user_details);
   const { data, isLoading } = useGetGeneralData();
-  const setGameweek = useSetRecoilState(gameweek);
+  const [gw, setGameweek] = useRecoilState(gameweek);
   const [showPlayerSummary, setShowPlayerSummary] =
     useRecoilState(player_summary);
   const setGeneralData = useSetRecoilState(general_data);
@@ -72,7 +72,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
 
       {showPlayerSummary && (
         <Modal
-          header={showPlayerSummary.split("|")[0]}
+          header={`${showPlayerSummary.split("|")[0]} (GW ${gw})`}
           dismiss={() => setShowPlayerSummary(null)}
         >
           <PlayerSummaryComp id={showPlayerSummary} />

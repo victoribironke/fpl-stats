@@ -3,16 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "lcp --proxyUrl https://fantasy.premierleague.com/api & next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ts-lint": "tsc --noEmit --incremental"
+    "ts-lint": "tsc --noEmit --incremental",
+    "proxy": "lcp --proxyUrl https://fantasy.premierleague.com/api"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.29.0",
     "@vercel/analytics": "^1.2.2",
     "firebase": "^10.10.0",
+    "local-cors-proxy": "^1.1.0",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",

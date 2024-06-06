@@ -27,22 +27,6 @@ const Dashboard = () => {
 
   if (isLoading) return <PageLoader type="small" />;
 
-  // useEffect(() => {
-  //   fetch(
-  //     "https://fpl-stats-api.vercel.app/api/hello",
-  //     // "http://localhost:3001/api/hello",
-  //     {
-  //       headers: {
-  //         url: "https://fantasy.premierleague.com/api/bootstrap-static/",
-  //       },
-  //       mode: "no-cors",
-  //     }
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((e) => console.warn(e));
-  // }, []);
-
   return (
     <>
       <HeadTemplate title="Dashboard" />
