@@ -1,7 +1,9 @@
-export const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8010/proxy"
-    : "https://fantasy.premierleague.com/api";
+// export const BASE_URL =
+//   process.env.NODE_ENV === "development"
+//     ? "http://localhost:8010/proxy"
+//     : "https://fantasy.premierleague.com/api";
+
+export const BASE_URL = "http://localhost:8010/proxy";
 
 export const ENDPOINTS = {
   history: (team_id: string) => BASE_URL + `/entry/${team_id}/history/`,
