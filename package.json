@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "lcp --proxyUrl https://fantasy.premierleague.com/api & next dev",
-    "build": "next build & lcp --proxyUrl https://fantasy.premierleague.com/api",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "ts-lint": "tsc --noEmit --incremental",

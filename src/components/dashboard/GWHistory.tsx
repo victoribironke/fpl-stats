@@ -17,14 +17,14 @@ const GWHistory = ({ data }: { data: History }) => {
               className="pl-4 pr-2 py-3 font-medium whitespace-nowrap"
               title="Gameweek"
             >
-              GW
+              Gw
             </th>
             <th
               scope="col"
               className="px-2 py-3 font-medium whitespace-nowrap"
               title="Gameweek points"
             >
-              GWP
+              GwP
             </th>
             <th
               scope="col"
@@ -66,7 +66,7 @@ const GWHistory = ({ data }: { data: History }) => {
               className="px-2 py-3 font-medium whitespace-nowrap"
               title="Gameweek rank"
             >
-              GWR
+              GwR
             </th>
             <th
               scope="col"
