@@ -1,7 +1,6 @@
 import { DashboardTemplateProps } from "@/types/dashboard";
 import {
   gameweek,
-  gameweeks,
   general_data,
   player_summary,
   user_details,
@@ -22,11 +21,11 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [showPlayerSummary, setShowPlayerSummary] =
     useRecoilState(player_summary);
   const setGeneralData = useSetRecoilState(general_data);
-  const gws = useRecoilValue(gameweeks);
 
   useEffect(() => {
     if (data) {
       setGeneralData(data);
+      // setGameweek("31");
       setGameweek(data.events.find((e) => e.is_current)?.id.toString() ?? "1");
     }
   }, [data]);
@@ -42,21 +41,10 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
               {user?.name}
             </button>
 
-            <div className="custom-select">
-              <select
-                className="w-fit bg-gray-100 outline-none rounded-lg block py-1.5 px-3 pr-10"
-                onChange={(e) => setGameweek(e.target.value)}
-              >
-                {gws.map((g, i) => (
-                  <option key={i} value={g.split(" ")[1]}>
-                    {g}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="bg-gray-100 py-1.5 px-3 rounded-md">GW {gw}</div>
 
             <button
-              className="py-1 px-1.5 sm:px-3 rounded-md ml-auto bg-red text-white"
+              className="py-1.5 px-1.5 sm:px-3 rounded-md ml-auto bg-red text-white"
               onClick={signOutUser}
             >
               <TbLogout2 className="sm:hidden text-lg" />

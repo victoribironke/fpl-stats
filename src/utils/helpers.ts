@@ -1,3 +1,5 @@
+import { gameweek } from "@/atoms/atoms";
+import { IMAGES } from "@/constants/images";
 import {
   GWPicks,
   GeneralData,
@@ -8,6 +10,7 @@ import {
 import { FaRankingStar, FaRegStar } from "react-icons/fa6";
 import { IoIosPerson } from "react-icons/io";
 import { MdOutlineEventSeat } from "react-icons/md";
+import { useRecoilValue } from "recoil";
 
 export const classNames = (...classes: (string | number | boolean)[]) =>
   classes.filter(Boolean).join(" ");
@@ -75,7 +78,15 @@ export const getElementDetails = (
   const subbed_in = (elementsSubbedIn ?? []).includes(element);
   const subbed_out = (elementsSubbedOut ?? []).includes(element);
 
-  return { full_name, position, team, points, subbed_in, subbed_out };
+  return {
+    full_name,
+    position,
+    team,
+    points,
+    subbed_in,
+    subbed_out,
+    web_name: elementObj?.web_name,
+  };
 };
 
 export const calculateFPLPoints = (
@@ -148,7 +159,9 @@ export const calculateFPLPoints = (
     },
   ];
 
-  return points.filter((p) => p.points !== 0);
+  return points.filter(
+    (p) => p.points !== 0 || p.statistic === "Minutes played"
+  );
 };
 
 const getPoints = (position: string, statistic: string, value: number) => {
@@ -164,7 +177,7 @@ const getPoints = (position: string, statistic: string, value: number) => {
     case "Assists":
       return value * 3;
     case "MinutesPlayed":
-      return value >= 60 ? 2 : 1;
+      return value === 0 ? 0 : value >= 60 ? 2 : 1;
     case "CleanSheet":
       return position === "Goalkeeper" || position === "Defender"
         ? value * 4
@@ -190,4 +203,92 @@ const getPoints = (position: string, statistic: string, value: number) => {
     default:
       return 0;
   }
+};
+
+export const getJersey = (team: string, pos: Positions) => {
+  const jerseyMap = {
+    arsenal: { player: IMAGES.arsenal.src, gk: IMAGES.arsenal_gk.src },
+    aston_villa: {
+      player: IMAGES.aston_villa.src,
+      gk: IMAGES.aston_villa_gk.src,
+    },
+    bournemouth: {
+      player: IMAGES.bournemouth.src,
+      gk: IMAGES.bournemouth_gk.src,
+    },
+    brentford: { player: IMAGES.brentford.src, gk: IMAGES.brentford_gk.src },
+    brighton: { player: IMAGES.brighton.src, gk: IMAGES.brighton_gk.src },
+    chelsea: { player: IMAGES.chelsea.src, gk: IMAGES.chelsea_gk.src },
+    crystal_palace: {
+      player: IMAGES.crystal_palace.src,
+      gk: IMAGES.crystal_palace_gk.src,
+    },
+    everton: { player: IMAGES.everton.src, gk: IMAGES.everton_gk.src },
+    fulham: { player: IMAGES.fulham.src, gk: IMAGES.fulham_gk.src },
+    liverpool: { player: IMAGES.liverpool.src, gk: IMAGES.liverpool_gk.src },
+    man_city: { player: IMAGES.man_city.src, gk: IMAGES.man_city_gk.src },
+    man_utd: { player: IMAGES.man_united.src, gk: IMAGES.man_united_gk.src },
+    newcastle: { player: IMAGES.newcastle.src, gk: IMAGES.newcastle_gk.src },
+    nottm_forest: {
+      player: IMAGES.nottingham_forest.src,
+      gk: IMAGES.nottingham_forest_gk.src,
+    },
+    spurs: { player: IMAGES.tottenham.src, gk: IMAGES.tottenham_gk.src },
+    west_ham: { player: IMAGES.west_ham.src, gk: IMAGES.west_ham_gk.src },
+    wolves: { player: IMAGES.wolves.src, gk: IMAGES.wolves_gk.src },
+  };
+
+  const reformedTeamName = team
+    .toLowerCase()
+    .split("'")
+    .join("")
+    .split(" ")
+    .join("_");
+
+  const t = jerseyMap[reformedTeamName as keyof typeof jerseyMap];
+
+  if (t) return pos === "GKP" ? t.gk : t.player;
+
+  return "";
+};
+
+export const getInFormPlayers = (
+  players: GeneralData["elements"],
+  minForm = 5.0
+) => {
+  const minMinutes = getMinimumMinutes();
+
+  return players
+    ?.filter((p) => parseFloat(p.form) >= minForm && p.minutes >= minMinutes)
+    .sort((a, b) => (a.minutes < b.minutes ? 1 : -1));
+};
+
+export const suggestTransfers = (
+  players: GeneralData["elements"],
+  teams: GeneralData["teams"],
+  difficultyThreshold = 1200
+) => {
+  const minMinutes = getMinimumMinutes();
+  const suggestedTransfers: GeneralData["elements"] = [];
+
+  players?.forEach((player) => {
+    const team = teams?.find((team) => team.id === player.team);
+
+    if (team && team.strength_overall_home < difficultyThreshold) {
+      if (player.chance_of_playing_this_round >= 75) {
+        if (player.minutes >= minMinutes) {
+          suggestedTransfers.push(player);
+        }
+      }
+    }
+  });
+
+  return suggestedTransfers.sort((a, b) => (a.minutes < b.minutes ? 1 : -1));
+};
+
+export const getMinimumMinutes = () => {
+  const gw = useRecoilValue(gameweek);
+  const minMinutes = (90 * parseInt(gw)) / 2;
+
+  return minMinutes;
 };

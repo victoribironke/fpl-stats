@@ -6,7 +6,7 @@ import { PlayerSummary } from "@/types/dashboard";
 import { calculateFPLPoints } from "@/utils/helpers";
 
 const PlayerSummaryComp = ({ id }: { id: string }) => {
-  const { data, isLoading } = useGetPlayerSummary(id.split("|")[1]);
+  const { data, isFetching } = useGetPlayerSummary(id.split("|")[1]);
   const gw = useRecoilValue(gameweek);
 
   const positions = {
@@ -17,7 +17,7 @@ const PlayerSummaryComp = ({ id }: { id: string }) => {
   };
   const position = positions[id.split("|")[2] as keyof typeof positions];
 
-  if (isLoading) return <PageLoader type="small" />;
+  if (isFetching) return <PageLoader type="small" />;
 
   return (
     <div className="w-full overflow-x-scroll rounded-lg border grid grid-cols-1">

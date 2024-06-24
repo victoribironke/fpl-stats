@@ -17,6 +17,7 @@ const config: Config = {
         purple: "#38003c",
         "light-green": "#00ff85",
         "dark-blue": "#1e293b",
+        "dark-green": "#004600",
       },
       screens: { rs: "450px" },
     },

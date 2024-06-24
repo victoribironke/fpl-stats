@@ -12,7 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data: response,
       };
     } catch ({ message }: any) {
-      // console.log(error.message, "ERR")
       return { status_code: 500, message, data: {} };
     }
   };

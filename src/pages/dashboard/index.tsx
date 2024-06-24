@@ -1,5 +1,5 @@
 import { gameweeks, user_details } from "@/atoms/atoms";
-import GWHistory from "@/components/dashboard/GWHistory";
+import GWPicks from "@/components/dashboard/GWPicks";
 import GWPicksTable from "@/components/dashboard/GWPicksTable";
 import TopStats from "@/components/dashboard/TopStats";
 import HeadTemplate from "@/components/general/HeadTemplate";
@@ -34,8 +34,10 @@ const Dashboard = () => {
       <TopStats data={data as History} />
 
       <div className="mt-4 w-full flex justify-center items-start gap-4 flex-col lg:flex-row">
+        <GWPicks />
         <GWPicksTable />
-        <GWHistory data={data as History} />
+        {/* <div className="w-full lg:w-1/3 overflow-x-scroll rounded-lg border grid grid-cols-1"></div> */}
+        {/* <GWHistory data={data as History} /> */}
       </div>
     </>
   );

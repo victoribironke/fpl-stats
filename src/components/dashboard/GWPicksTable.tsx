@@ -13,6 +13,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 const GWPicksTable = () => {
   const gw = useRecoilValue(gameweek);
   const user = useRecoilValue(user_details);
+  // const { data, isLoading } = useGetGWPicks("2778650", gw);
   const { data, isLoading } = useGetGWPicks(user!.team_id, gw);
   const setShowPlayerSummary = useSetRecoilState(player_summary);
   const generalData = useRecoilValue(general_data) as GeneralData;
@@ -20,7 +21,7 @@ const GWPicksTable = () => {
   if (isLoading) return <></>;
 
   return (
-    <div className="w-full lg:w-1/2 overflow-x-scroll rounded-lg border grid grid-cols-1">
+    <div className="w-full lg:w-1/3 overflow-x-scroll rounded-lg border grid grid-cols-1">
       <table className="w-full text-left rtl:text-right">
         <thead className="border-b-2">
           <tr className="bg-white">
