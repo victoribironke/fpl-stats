@@ -345,6 +345,7 @@ const evaluatePlayers = (players: GeneralData["elements"]): EvaluatedPlayer[] =>
         (a, b) => a + parseFloat(b.criterion) * b.weight,
         0
       ),
+      position: p,
     };
   });
 
@@ -393,6 +394,7 @@ export const evaluatePlayer = (player: GeneralDataElement): EvaluatedPlayer => {
       (a, b) => a + parseFloat(b.criterion) * b.weight,
       0
     ),
+    position: p,
   };
 };
 
@@ -445,4 +447,14 @@ export const suggestTransfers = (
         a.chance_of_playing_next_round >= 75
       );
     });
+};
+
+export const getPlayerImageUrl = (player?: GeneralDataElement): string => {
+  if (!player) {
+    return "player-placeholder.png";
+  }
+
+  const imgId = player.photo.replace(".jpg", "");
+
+  return `https://resources.premierleague.com/premierleague/photos/players/110x140/p${imgId}.png`;
 };

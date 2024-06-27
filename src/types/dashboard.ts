@@ -317,6 +317,7 @@ export type Positions = "GKP" | "DEF" | "MID" | "FWD" | "-";
 
 export interface EvaluatedPlayer extends GeneralDataElement {
   performanceScore: number;
+  position: string;
 }
 
 export type Fixture = {
