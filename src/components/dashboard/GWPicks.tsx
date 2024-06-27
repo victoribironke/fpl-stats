@@ -6,7 +6,7 @@ import {
 } from "@/atoms/atoms";
 import { useGetGWPicks } from "@/hooks/dashboard";
 import { GeneralData } from "@/types/dashboard";
-import { getElementDetails, getJersey } from "@/utils/helpers";
+import { classNames, getElementDetails, getJersey } from "@/utils/helpers";
 import { IoIosArrowUp } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -115,11 +115,22 @@ const GWPicksTable = () => {
 
 const Row = ({ l }: { l: any }) => {
   const setShowPlayerSummary = useSetRecoilState(player_summary);
+  const red =
+    (l.chance_of_playing_next_round >= 0 &&
+      l.chance_of_playing_next_round <= 25) ||
+    (l.chance_of_playing_this_round >= 0 &&
+      l.chance_of_playing_this_round <= 25);
+  const yellow =
+    (l.chance_of_playing_next_round >= 50 &&
+      l.chance_of_playing_next_round <= 75) ||
+    (l.chance_of_playing_this_round >= 50 &&
+      l.chance_of_playing_this_round <= 75);
 
   return (
     <div
-      onClick={() =>
-        setShowPlayerSummary(`${l.full_name}|${l.element}|${l.position}`)
+      onClick={
+        () =>
+          setShowPlayerSummary(`${l.full_name}|${l.element}|${l.position}|gw`) // Player's name, player's id from the API, player's position, GW or season stats
       }
       className="relative rounded-b-md overflow-hidden w-full cursor-pointer max-w-32 flex flex-col items-center justify-center"
     >
@@ -128,10 +139,15 @@ const Row = ({ l }: { l: any }) => {
         alt="team jersey"
         className="mb-2 w-full max-w-[40%]"
       />
-      <p className="bg-blue w-full rounded-t-md text-xs md:text-sm text-white px-2 py-0.5 text-center whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+      <p
+        className={classNames(
+          "w-full rounded-t-md text-xs md:text-sm text-white px-2 py-0.5 text-center whitespace-nowrap overflow-hidden text-ellipsis font-medium",
+          red ? "bg-red" : yellow ? "bg-yellow" : "bg-blue"
+        )}
+      >
         {l.web_name}
       </p>
-      <p className="bg-white w-full text-xs md:text-sm px-2 py-0.5 text-center font-medium">
+      <p className="w-full text-xs md:text-sm px-2 py-0.5 text-center font-medium bg-white">
         {l.actual_points}
       </p>
 

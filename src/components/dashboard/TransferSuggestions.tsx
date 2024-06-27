@@ -1,15 +1,21 @@
-import { gameweek, general_data, user_details } from "@/atoms/atoms";
+import {
+  gameweek,
+  general_data,
+  player_summary,
+  user_details,
+} from "@/atoms/atoms";
 import { useGetFixtures, useGetGWPicks } from "@/hooks/dashboard";
 import { EvaluatedPlayer, GeneralData, Positions } from "@/types/dashboard";
 import { classNames, formatNumber, suggestTransfers } from "@/utils/helpers";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const TransferSuggestions = () => {
   const gw = useRecoilValue(gameweek);
   const user = useRecoilValue(user_details);
   const { data, isLoading } = useGetGWPicks(user!.team_id, gw);
   const { data: fixtures, isLoading: fixturesLoading } = useGetFixtures();
+  const setShowPlayerSummary = useSetRecoilState(player_summary);
   const generalData = useRecoilValue(general_data) as GeneralData;
   const positions = [
     { short: "GKP", full: "Goalkeepers" },
@@ -103,6 +109,10 @@ const TransferSuggestions = () => {
 
           <tbody>
             {transfers.map((t, i) => {
+              const positions: Positions[] = ["GKP", "DEF", "MID", "FWD", "-"];
+              const position =
+                positions[t.element_type ? t.element_type - 1 : 4];
+
               const team = generalData.teams.find((e) => e.id === t.team);
               const f = nextGWFixtures
                 ?.filter(
@@ -117,7 +127,14 @@ const TransferSuggestions = () => {
 
               return (
                 <tr className="bg-white border-b text-sm" key={i}>
-                  <td className="pl-4 text-blue font-medium pr-2 py-3 whitespace-nowrap hover:underline cursor-pointer">
+                  <td
+                    className="pl-4 text-blue font-medium pr-2 py-3 whitespace-nowrap hover:underline cursor-pointer"
+                    onClick={() =>
+                      setShowPlayerSummary(
+                        `${t.first_name} ${t.second_name}|${t.id}|${position}|season` // Player's name, player's id from the API, player's position, GW or season stats
+                      )
+                    }
+                  >
                     {t.first_name} {t.second_name}
                   </td>
                   <td className="px-2 py-3 whitespace-nowrap">{team?.name}</td>

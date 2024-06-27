@@ -3,6 +3,7 @@ import {
   EvaluatedPlayer,
   GWPicks,
   GeneralData,
+  GeneralDataElement,
   History,
   PlayerSummary,
   Positions,
@@ -119,6 +120,8 @@ export const getElementDetails = (
   const points = elementObj?.event_points.toString();
   const subbed_in = (elementsSubbedIn ?? []).includes(element);
   const subbed_out = (elementsSubbedOut ?? []).includes(element);
+  const chance_of_playing_next_round = elementObj?.chance_of_playing_next_round;
+  const chance_of_playing_this_round = elementObj?.chance_of_playing_this_round;
 
   return {
     full_name,
@@ -128,6 +131,8 @@ export const getElementDetails = (
     subbed_in,
     subbed_out,
     web_name: elementObj?.web_name,
+    chance_of_playing_next_round,
+    chance_of_playing_this_round,
   };
 };
 
@@ -342,6 +347,54 @@ const evaluatePlayers = (players: GeneralData["elements"]): EvaluatedPlayer[] =>
       ),
     };
   });
+
+export const evaluatePlayer = (player: GeneralDataElement): EvaluatedPlayer => {
+  const positions = ["GKP", "DEF", "MID", "FWD", "-"];
+  const p = positions[player.element_type ? player.element_type - 1 : 4];
+
+  const criteriaWithWeights = [
+    { criterion: player.form, weight: 3 },
+    { criterion: player.points_per_game, weight: 2 }, // Increased weight for points per game
+    { criterion: player.total_points.toString(), weight: 1 },
+    {
+      criterion: player.creativity,
+      weight: p === "GKP" || p === "DEF" ? 1 : 3,
+    },
+    { criterion: player.minutes.toString(), weight: 1.5 },
+    {
+      criterion: player.goals_scored.toString(),
+      weight: p === "GKP" ? 1 : p === "DEF" ? 1.5 : p === "MID" ? 2 : 3,
+    },
+    {
+      criterion: player.goals_conceded.toString(),
+      weight: p === "GKP" || p === "DEF" ? -3 : p === "MID" ? -1.5 : -1,
+    },
+    {
+      criterion: player.assists.toString(),
+      weight: p === "FWD" || p === "MID" ? 3 : p === "DEF" ? 1.5 : 1,
+    },
+    {
+      criterion: player.clean_sheets.toString(),
+      weight: p === "GKP" ? 3 : p === "DEF" ? 2 : p === "MID" ? 1.5 : 1,
+    },
+    { criterion: player.selected_by_percent, weight: 2 },
+    {
+      criterion: player.expected_goal_involvements,
+      weight: p === "GKP" ? 1.5 : p === "DEF" || p === "MID" ? 2 : 1, // Changed negative weight to positive for forwards
+    },
+    { criterion: player.influence, weight: 2 }, // Added influence
+    { criterion: player.expected_assists, weight: 1.5 }, // Added expected assists
+    { criterion: player.bonus.toString(), weight: 1.5 }, // Added bonus points
+  ];
+
+  return {
+    ...player,
+    performanceScore: criteriaWithWeights.reduce(
+      (a, b) => a + parseFloat(b.criterion) * b.weight,
+      0
+    ),
+  };
+};
 
 const calculateAveragePerformance = (
   currentTeam: GWPicks,

@@ -22,6 +22,8 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
     useRecoilState(player_summary);
   const setGeneralData = useSetRecoilState(general_data);
 
+  const p = showPlayerSummary?.split("|") ?? [];
+
   useEffect(() => {
     if (data) {
       setGeneralData(data);
@@ -62,7 +64,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
 
       {showPlayerSummary && (
         <Modal
-          header={`${showPlayerSummary.split("|")[0]} (GW ${gw})`}
+          header={`${p[0]} ${p[3] === "gw" ? `(GW ${gw})` : "(Season)"}`}
           dismiss={() => setShowPlayerSummary(null)}
         >
           <PlayerSummaryComp id={showPlayerSummary} />

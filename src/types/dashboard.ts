@@ -162,7 +162,7 @@ export type PlayerSummary = {
   }[];
 };
 
-type GeneralDataElements = {
+export type GeneralDataElement = {
   chance_of_playing_next_round: number;
   chance_of_playing_this_round: number;
   code: number;
@@ -277,7 +277,7 @@ export type GeneralData = {
     strength_defence_away: number;
     pulse_id: number;
   }[];
-  elements: GeneralDataElements[];
+  elements: GeneralDataElement[];
   events: {
     id: number;
     name: string;
@@ -315,7 +315,7 @@ export type GeneralData = {
 
 export type Positions = "GKP" | "DEF" | "MID" | "FWD" | "-";
 
-export interface EvaluatedPlayer extends GeneralDataElements {
+export interface EvaluatedPlayer extends GeneralDataElement {
   performanceScore: number;
 }
 

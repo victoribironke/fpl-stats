@@ -67,7 +67,7 @@ const GWPicksTable = () => {
                     className="hover:underline cursor-pointer flex items-center gap-1"
                     onClick={() =>
                       setShowPlayerSummary(
-                        `${full_name}|${p.element}|${position}`
+                        `${full_name}|${p.element}|${position}|gw`
                       )
                     }
                   >
