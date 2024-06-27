@@ -9,4 +9,5 @@ export const ENDPOINTS = {
     BASE_URL + `/entry/${team_id}/event/${gw}/picks/`,
   player_summary: (id: string) => BASE_URL + `/element-summary/${id}/`,
   general_data: BASE_URL + "/bootstrap-static/",
+  fixtures: BASE_URL + "/fixtures/",
 };

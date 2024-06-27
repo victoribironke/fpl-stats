@@ -1,7 +1,8 @@
 import { gameweeks, user_details } from "@/atoms/atoms";
+import GWHistory from "@/components/dashboard/GWHistory";
 import GWPicks from "@/components/dashboard/GWPicks";
-import GWPicksTable from "@/components/dashboard/GWPicksTable";
 import TopStats from "@/components/dashboard/TopStats";
+import TransferSuggestions from "@/components/dashboard/TransferSuggestions";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
@@ -31,13 +32,21 @@ const Dashboard = () => {
     <>
       <HeadTemplate title="Dashboard" />
 
-      <TopStats data={data as History} />
-
-      <div className="mt-4 w-full flex justify-center items-start gap-4 flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-start gap-4 flex-col lg:flex-row-reverse">
+        <TopStats data={data as History} />
         <GWPicks />
-        <GWPicksTable />
-        {/* <div className="w-full lg:w-1/3 overflow-x-scroll rounded-lg border grid grid-cols-1"></div> */}
-        {/* <GWHistory data={data as History} /> */}
+      </div>
+
+      <div className="w-full flex justify-center items-start gap-4 flex-col lg:flex-row-reverse">
+        <div className="w-full lg:w-2/5">
+          <p className="mt-4 text-lg font-medium">Transfer suggestions</p>
+          <TransferSuggestions />
+        </div>
+
+        <div className="w-full lg:w-3/5">
+          <p className="mt-4 text-lg font-medium">Gameweek history</p>
+          <GWHistory data={data!} />
+        </div>
       </div>
     </>
   );

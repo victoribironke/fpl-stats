@@ -1,6 +1,6 @@
-import { gameweek } from "@/atoms/atoms";
 import { IMAGES } from "@/constants/images";
 import {
+  EvaluatedPlayer,
   GWPicks,
   GeneralData,
   History,
@@ -10,7 +10,6 @@ import {
 import { FaRankingStar, FaRegStar } from "react-icons/fa6";
 import { IoIosPerson } from "react-icons/io";
 import { MdOutlineEventSeat } from "react-icons/md";
-import { useRecoilValue } from "recoil";
 
 export const classNames = (...classes: (string | number | boolean)[]) =>
   classes.filter(Boolean).join(" ");
@@ -31,17 +30,40 @@ export const getTopStats = (data: History, gw: string) => {
     ).toFixed(2)
   );
 
+  const getBestAndWorstGW = (type: "best" | "worst") => {
+    return data.current.sort((a, b) => {
+      const aPoints =
+        gwWhenBBWasUsed === a.event
+          ? (a.points ?? 0) + (a.points_on_bench ?? 0)
+          : a.points ?? 0;
+      const bPoints =
+        gwWhenBBWasUsed === b.event
+          ? (b.points ?? 0) + (b.points_on_bench ?? 0)
+          : b.points ?? 0;
+
+      return type === "best" ? bPoints - aPoints : aPoints - bPoints;
+    })[0];
+  };
+
+  const bestGW = getBestAndWorstGW("best");
+  const bestGWPoints =
+    gwWhenBBWasUsed === bestGW.event
+      ? (bestGW.points ?? 0) + (bestGW.points_on_bench ?? 0)
+      : bestGW.points ?? 0;
+
+  const worstGW = getBestAndWorstGW("worst");
+  const worstGWPoints =
+    gwWhenBBWasUsed === worstGW.event
+      ? (worstGW.points ?? 0) + (worstGW.points_on_bench ?? 0)
+      : worstGW.points ?? 0;
+
   return [
     {
       icon: FaRegStar,
       title: "Current points",
       value: formatNumber(totalPointsThisGW),
     },
-    {
-      icon: FaRankingStar,
-      title: "GW rank",
-      value: formatNumber(currentGW?.rank ?? 0),
-    },
+
     {
       icon: MdOutlineEventSeat,
       title: "Points on bench",
@@ -56,6 +78,26 @@ export const getTopStats = (data: History, gw: string) => {
       icon: FaRegStar,
       title: "Total points",
       value: formatNumber(currentGW?.total_points ?? 0),
+    },
+    {
+      icon: FaRankingStar,
+      title: "Best gameweek",
+      value: `GW ${bestGW.event} (${bestGWPoints} points)`,
+    },
+    {
+      icon: FaRankingStar,
+      title: "Worst gameweek",
+      value: `GW ${worstGW.event} (${worstGWPoints} points)`,
+    },
+    {
+      icon: FaRankingStar,
+      title: "Gameweek rank",
+      value: formatNumber(currentGW?.rank ?? 0),
+    },
+    {
+      icon: FaRankingStar,
+      title: "Overall rank",
+      value: formatNumber(currentGW?.overall_rank ?? 0),
     },
   ];
 };
@@ -252,43 +294,102 @@ export const getJersey = (team: string, pos: Positions) => {
   return "";
 };
 
-export const getInFormPlayers = (
-  players: GeneralData["elements"],
-  minForm = 5.0
-) => {
-  const minMinutes = getMinimumMinutes();
+const evaluatePlayers = (players: GeneralData["elements"]): EvaluatedPlayer[] =>
+  players.map((player) => {
+    const positions = ["GKP", "DEF", "MID", "FWD", "-"];
+    const p = positions[player.element_type ? player.element_type - 1 : 4];
 
-  return players
-    ?.filter((p) => parseFloat(p.form) >= minForm && p.minutes >= minMinutes)
-    .sort((a, b) => (a.minutes < b.minutes ? 1 : -1));
+    const criteriaWithWeights = [
+      { criterion: player.form, weight: 3 },
+      { criterion: player.points_per_game, weight: 2 }, // Increased weight for points per game
+      { criterion: player.total_points.toString(), weight: 1 },
+      {
+        criterion: player.creativity,
+        weight: p === "GKP" || p === "DEF" ? 1 : 3,
+      },
+      { criterion: player.minutes.toString(), weight: 1.5 },
+      {
+        criterion: player.goals_scored.toString(),
+        weight: p === "GKP" ? 1 : p === "DEF" ? 1.5 : p === "MID" ? 2 : 3,
+      },
+      {
+        criterion: player.goals_conceded.toString(),
+        weight: p === "GKP" || p === "DEF" ? -3 : p === "MID" ? -1.5 : -1,
+      },
+      {
+        criterion: player.assists.toString(),
+        weight: p === "FWD" || p === "MID" ? 3 : p === "DEF" ? 1.5 : 1,
+      },
+      {
+        criterion: player.clean_sheets.toString(),
+        weight: p === "GKP" ? 3 : p === "DEF" ? 2 : p === "MID" ? 1.5 : 1,
+      },
+      { criterion: player.selected_by_percent, weight: 2 },
+      {
+        criterion: player.expected_goal_involvements,
+        weight: p === "GKP" ? 1.5 : p === "DEF" || p === "MID" ? 2 : 1, // Changed negative weight to positive for forwards
+      },
+      { criterion: player.influence, weight: 2 }, // Added influence
+      { criterion: player.expected_assists, weight: 1.5 }, // Added expected assists
+      { criterion: player.bonus.toString(), weight: 1.5 }, // Added bonus points
+    ];
+
+    return {
+      ...player,
+      performanceScore: criteriaWithWeights.reduce(
+        (a, b) => a + parseFloat(b.criterion) * b.weight,
+        0
+      ),
+    };
+  });
+
+const calculateAveragePerformance = (
+  currentTeam: GWPicks,
+  evaluatedPlayers: EvaluatedPlayer[]
+) => {
+  const totalScore = currentTeam.picks.reduce((sum, player) => {
+    const performanceScore = evaluatedPlayers.find(
+      (e) => e.id === player.element
+    )?.performanceScore;
+
+    return sum + (performanceScore ?? 0);
+  }, 0);
+
+  return totalScore / currentTeam.picks.length;
 };
 
 export const suggestTransfers = (
-  players: GeneralData["elements"],
-  teams: GeneralData["teams"],
-  difficultyThreshold = 1200
+  currentTeam: GWPicks,
+  players: GeneralData["elements"]
 ) => {
-  const minMinutes = getMinimumMinutes();
-  const suggestedTransfers: GeneralData["elements"] = [];
+  const evaluatedPlayers = evaluatePlayers(players);
+  const averagePerformance = calculateAveragePerformance(
+    currentTeam,
+    evaluatedPlayers
+  );
+  const goodPlayers = evaluatedPlayers.filter(
+    (player) => player.performanceScore > averagePerformance
+  );
 
-  players?.forEach((player) => {
-    const team = teams?.find((team) => team.id === player.team);
+  const suggestedTransfers: EvaluatedPlayer[] = [];
 
-    if (team && team.strength_overall_home < difficultyThreshold) {
-      if (player.chance_of_playing_this_round >= 75) {
-        if (player.minutes >= minMinutes) {
-          suggestedTransfers.push(player);
-        }
-      }
-    }
-  });
+  suggestedTransfers.push(...goodPlayers);
 
-  return suggestedTransfers.sort((a, b) => (a.minutes < b.minutes ? 1 : -1));
-};
+  return Array.from(new Set(suggestedTransfers))
+    .filter((a) => {
+      // Remove players that are in their current team
+      const playerInCurrentTeam = currentTeam.picks.find(
+        (b) => b.element === a.id
+      );
 
-export const getMinimumMinutes = () => {
-  const gw = useRecoilValue(gameweek);
-  const minMinutes = (90 * parseInt(gw)) / 2;
-
-  return minMinutes;
+      if (!playerInCurrentTeam) return a;
+    })
+    .sort((a, b) => b.performanceScore - a.performanceScore) // Sort by their performance score
+    .filter((a) => {
+      // Remove players that are not fit
+      return (
+        a.chance_of_playing_this_round >= 75 &&
+        a.chance_of_playing_next_round >= 75
+      );
+    });
 };

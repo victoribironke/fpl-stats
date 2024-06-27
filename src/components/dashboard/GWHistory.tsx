@@ -8,7 +8,7 @@ const GWHistory = ({ data }: { data: History }) => {
   const user = useRecoilValue(user_details);
 
   return (
-    <div className="w-full lg:w-1/2 overflow-x-scroll rounded-lg border grid grid-cols-1">
+    <div className="w-full mt-2 overflow-x-scroll rounded-lg border grid grid-cols-1">
       <table className="w-full text-left rtl:text-right">
         <thead className="border-b-2">
           <tr className="bg-white">

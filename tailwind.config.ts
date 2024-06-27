@@ -19,7 +19,7 @@ const config: Config = {
         "dark-blue": "#1e293b",
         "dark-green": "#004600",
       },
-      screens: { rs: "450px" },
+      screens: { rs: "520px" },
     },
   },
   plugins: [],

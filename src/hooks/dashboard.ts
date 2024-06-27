@@ -1,5 +1,6 @@
 import { ENDPOINTS } from "@/constants/endpoints";
 import {
+  Fixture,
   GWPicks,
   GeneralData,
   History,
@@ -75,4 +76,21 @@ export const useGetPlayerSummary = (id: string) => {
   });
 
   return { error, data, isLoading, isFetching };
+};
+
+export const useGetFixtures = () => {
+  const url = ENDPOINTS.fixtures;
+
+  const { error, data, isLoading } = useQuery({
+    queryKey: ["getFixtures"],
+    queryFn: async () => {
+      const data: Fixture[] = await (
+        await fetch(isDev ? url : "/api/main", { headers: { url } })
+      ).json();
+
+      return data;
+    },
+  });
+
+  return { error, data, isLoading };
 };

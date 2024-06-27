@@ -25,7 +25,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   useEffect(() => {
     if (data) {
       setGeneralData(data);
-      // setGameweek("31");
+      // setGameweek("35");
       setGameweek(data.events.find((e) => e.is_current)?.id.toString() ?? "1");
     }
   }, [data]);
@@ -41,7 +41,9 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
               {user?.name}
             </button>
 
-            <div className="bg-gray-100 py-1.5 px-3 rounded-md">GW {gw}</div>
+            <div className="bg-blue text-white py-1.5 px-3 rounded-md">
+              GW {gw}
+            </div>
 
             <button
               className="py-1.5 px-1.5 sm:px-3 rounded-md ml-auto bg-red text-white"

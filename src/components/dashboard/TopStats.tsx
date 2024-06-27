@@ -7,7 +7,7 @@ const TopStats = ({ data }: { data: History }) => {
   const gw = useRecoilValue(gameweek);
 
   return (
-    <div className="w-full flex items-center justify-center sm:justify-start gap-4 flex-wrap">
+    <div className="w-full lg:w-1/3 justify-center grid gap-4 lg:grid-cols-1 md:grid-cols-3 rs:grid-cols-2 grid-cols-1">
       {getTopStats(data, gw).map((s, i) => (
         <Card icon={s.icon} title={s.title} value={s.value} key={i} />
       ))}
@@ -17,7 +17,7 @@ const TopStats = ({ data }: { data: History }) => {
 
 const Card = (card: TopStatsCardProps) => {
   return (
-    <div className="p-4 bg-white w-full min-w-[14rem] max-w-[15.2rem] border rounded-lg flex gap-4 items-center">
+    <div className="p-4 bg-white w-full min-w-[14rem] border rounded-lg flex gap-4 items-center">
       <div className="bg-blue bg-opacity-10 p-4 rounded-lg">
         <card.icon className="text-2xl sm:text-3xl text-blue" />
       </div>
