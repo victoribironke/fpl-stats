@@ -106,12 +106,6 @@ const TransferSuggestions = () => {
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 font-medium whitespace-nowrap"
-              >
-                Total points
-              </th>
-              <th
-                scope="col"
                 className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
               >
                 Performance score
@@ -155,9 +149,6 @@ const TransferSuggestions = () => {
                   </td>
                   <td className="px-2 py-3 whitespace-nowrap">
                     {t.now_cost / 10}m
-                  </td>
-                  <td className="px-2 py-3 whitespace-nowrap">
-                    {t.total_points}
                   </td>
                   <td className="pl-2 pr-4 py-3 whitespace-nowrap">
                     {formatNumber(parseFloat(t.performanceScore.toFixed(2)))}
