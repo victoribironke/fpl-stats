@@ -4,9 +4,8 @@ import {
   general_data,
   player_select,
   player_summary,
-  user_details,
 } from "@/atoms/atoms";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { TbLogout2 } from "react-icons/tb";
 import { useEffect } from "react";
 import { useGetGeneralData } from "@/hooks/dashboard";

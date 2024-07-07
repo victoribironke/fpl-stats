@@ -4,11 +4,9 @@ import {
   player_summary,
   user_details,
 } from "@/atoms/atoms";
-import { PAGES } from "@/constants/pages";
 import { useGetFixtures, useGetGWPicks } from "@/hooks/dashboard";
 import { EvaluatedPlayer, GeneralData, Positions } from "@/types/dashboard";
 import { classNames, formatNumber, suggestTransfers } from "@/utils/helpers";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 

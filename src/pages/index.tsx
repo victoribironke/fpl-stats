@@ -1,14 +1,11 @@
-import { user_details } from "@/atoms/atoms";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { alreadyLoggedIn } from "@/components/hoc/ProtectedRoute";
 import { ENDPOINTS } from "@/constants/endpoints";
 import { PAGES } from "@/constants/pages";
-import { User } from "@/types/dashboard";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useSetRecoilState } from "recoil";
 
 const Home = () => {
   const [value, setValue] = useState("");
