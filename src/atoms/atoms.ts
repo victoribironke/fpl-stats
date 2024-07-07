@@ -25,3 +25,13 @@ export const player_summary = atom<string | null>({
   key: "player summary",
   default: null,
 });
+
+export const player_select = atom({
+  key: "player select",
+  default: false,
+});
+
+export const selected_players = atom<number[]>({
+  key: "selected players",
+  default: [],
+});

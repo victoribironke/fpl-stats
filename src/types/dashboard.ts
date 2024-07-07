@@ -6,9 +6,6 @@ export type DashboardTemplateProps = {
 };
 
 export type User = {
-  email: string;
-  name: string;
-  uid: string;
   team_id: string;
 };
 

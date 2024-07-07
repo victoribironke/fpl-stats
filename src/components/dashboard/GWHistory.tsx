@@ -107,7 +107,7 @@ const GWHistory = ({ data }: { data: History }) => {
                   {formatNumber(c.event_transfers_cost)}
                 </td>
                 <td className="px-2 py-3 whitespace-nowrap">
-                  €{formatNumber(c.value / 10)}
+                  {formatNumber(c.value / 10)}m
                 </td>
                 <td className="px-2 py-3 whitespace-nowrap">
                   {formatNumber(c.rank)}

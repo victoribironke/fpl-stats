@@ -8,7 +8,6 @@ import { user_details } from "@/atoms/atoms";
 import { useSetRecoilState } from "recoil";
 import { doc, getDoc } from "firebase/firestore";
 
-// Check if user is logged in
 export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
   return function CheckIfTheUserIsLoggedIn(props: object) {
     const [isLoading, setIsLoading] = useState(true);
@@ -16,27 +15,24 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      const unsub = onAuthStateChanged(auth, (user) => {
-        setIsLoading(true);
+      const user_info = JSON.parse(
+        localStorage.getItem("fpl-stats-user-info")!
+      );
 
-        if (user === null) {
-          router.push(PAGES.home);
-          return;
-        } else {
-          getDoc(doc(db, "users", user.uid)).then((u) => {
-            setUser({
-              email: user.email!,
-              name: user.displayName!,
-              uid: user.uid,
-              team_id: u.data()!.team_id,
-            });
+      setIsLoading(true);
 
-            setIsLoading(false);
-          });
-        }
-      });
+      if (!user_info) {
+        router.push(PAGES.home);
+        return;
+      } else {
+        setUser({
+          team_id: user_info.team_id,
+        });
 
-      return unsub;
+        router.push(PAGES.dashboard);
+      }
+
+      setIsLoading(false);
     }, []);
 
     if (isLoading) {
@@ -47,7 +43,6 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
   };
 };
 
-// Prevents already logged in user access to auth modals
 export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
   return function StopLoggedInUsersAccessToAuthModals(props: object) {
     const [isLoading, setIsLoading] = useState(true);
@@ -55,27 +50,22 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      const unsub = onAuthStateChanged(auth, (user) => {
-        setIsLoading(true);
+      const user_info = JSON.parse(
+        localStorage.getItem("fpl-stats-user-info")!
+      );
 
-        if (user) {
-          getDoc(doc(db, "users", user.uid)).then((u) => {
-            setUser({
-              email: user.email!,
-              name: user.displayName!,
-              uid: user.uid,
-              team_id: u.data()!.team_id,
-            });
+      setIsLoading(true);
 
-            router.push(PAGES.dashboard);
-            return;
-          });
-        }
+      if (user_info) {
+        setUser({
+          team_id: user_info.team_id,
+        });
 
-        setIsLoading(false);
-      });
+        router.push(PAGES.dashboard);
+        return;
+      }
 
-      return unsub;
+      setIsLoading(false);
     }, []);
 
     if (isLoading) {

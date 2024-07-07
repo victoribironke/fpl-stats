@@ -2,27 +2,39 @@ import { DashboardTemplateProps } from "@/types/dashboard";
 import {
   gameweek,
   general_data,
+  player_select,
   player_summary,
   user_details,
 } from "@/atoms/atoms";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { signOutUser } from "@/utils/firebase";
 import { TbLogout2 } from "react-icons/tb";
 import { useEffect } from "react";
 import { useGetGeneralData } from "@/hooks/dashboard";
 import PageLoader from "../general/PageLoader";
 import Modal from "../general/Modal";
+import WideModal from "../general/WideModal";
 import PlayerSummaryComp from "./PlayerSummaryComp";
+import PlayerSelect from "./PlayerSelect";
+import { PAGES } from "@/constants/pages";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
-  const user = useRecoilValue(user_details);
   const { data, isLoading } = useGetGeneralData();
   const [gw, setGameweek] = useRecoilState(gameweek);
+  const [showPlayerSelect, setShowPlayerSelect] = useRecoilState(player_select);
   const [showPlayerSummary, setShowPlayerSummary] =
     useRecoilState(player_summary);
   const setGeneralData = useSetRecoilState(general_data);
+  const { push } = useRouter();
 
   const p = showPlayerSummary?.split("|") ?? [];
+
+  const signOutUser = () => {
+    localStorage.removeItem("fpl-stats-user-info");
+
+    push(PAGES.home);
+  };
 
   useEffect(() => {
     if (data) {
@@ -38,21 +50,21 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
     <>
       <section className="w-full min-h-screen flex items-center flex-col">
         <div className="w-full bg-white border-b p-4 flex items-center justify-center">
-          <div className="w-full max-w-[1280px] flex gap-4">
-            <button className="bg-gray-100 py-1.5 px-3 rounded-md">
-              {user?.name}
-            </button>
-
-            <div className="bg-blue text-white py-1.5 px-3 rounded-md">
+          <div className="w-full max-w-[1280px] flex gap-4 items-center justify-center">
+            <div className="bg-green bg-opacity-10 text-green py-1 px-3 rounded-md">
               GW {gw}
             </div>
+
+            <Link href={PAGES.analysis} className="text-blue hover:underline">
+              Analysis
+            </Link>
 
             <button
               className="py-1.5 px-1.5 sm:px-3 rounded-md ml-auto bg-red text-white"
               onClick={signOutUser}
             >
               <TbLogout2 className="sm:hidden text-lg" />
-              <p className="hidden sm:block">Log out</p>
+              <p className="hidden sm:block text-sm">Log out</p>
             </button>
           </div>
         </div>
@@ -69,6 +81,15 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
         >
           <PlayerSummaryComp id={showPlayerSummary} />
         </Modal>
+      )}
+
+      {showPlayerSelect && (
+        <WideModal
+          header="Player analysis"
+          dismiss={() => setShowPlayerSelect(false)}
+        >
+          <PlayerSelect />
+        </WideModal>
       )}
     </>
   );

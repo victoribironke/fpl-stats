@@ -4,9 +4,11 @@ import {
   player_summary,
   user_details,
 } from "@/atoms/atoms";
+import { PAGES } from "@/constants/pages";
 import { useGetFixtures, useGetGWPicks } from "@/hooks/dashboard";
 import { EvaluatedPlayer, GeneralData, Positions } from "@/types/dashboard";
 import { classNames, formatNumber, suggestTransfers } from "@/utils/helpers";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -100,6 +102,18 @@ const TransferSuggestions = () => {
               </th>
               <th
                 scope="col"
+                className="px-2 py-3 font-medium whitespace-nowrap"
+              >
+                Price
+              </th>
+              <th
+                scope="col"
+                className="px-2 py-3 font-medium whitespace-nowrap"
+              >
+                Total points
+              </th>
+              <th
+                scope="col"
                 className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
               >
                 Performance score
@@ -140,6 +154,12 @@ const TransferSuggestions = () => {
                   <td className="px-2 py-3 whitespace-nowrap">{team?.name}</td>
                   <td className="px-2 py-3 whitespace-nowrap">
                     {f?.join(", ")}
+                  </td>
+                  <td className="px-2 py-3 whitespace-nowrap">
+                    {t.now_cost / 10}m
+                  </td>
+                  <td className="px-2 py-3 whitespace-nowrap">
+                    {t.total_points}
                   </td>
                   <td className="pl-2 pr-4 py-3 whitespace-nowrap">
                     {formatNumber(parseFloat(t.performanceScore.toFixed(2)))}
