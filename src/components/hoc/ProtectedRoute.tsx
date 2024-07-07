@@ -9,7 +9,7 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
   return function CheckIfTheUserIsLoggedIn(props: object) {
     const [isLoading, setIsLoading] = useState(true);
     const setUser = useSetRecoilState(user_details);
-    const router = useRouter();
+    const { push, pathname } = useRouter();
 
     useEffect(() => {
       const user_info = JSON.parse(
@@ -19,14 +19,14 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
       setIsLoading(true);
 
       if (!user_info) {
-        router.push(PAGES.home);
+        push(PAGES.home);
         return;
       } else {
         setUser({
           team_id: user_info.team_id,
         });
 
-        router.push(PAGES.dashboard);
+        push(pathname);
       }
 
       setIsLoading(false);

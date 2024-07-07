@@ -458,3 +458,76 @@ export const getPlayerImageUrl = (player?: GeneralDataElement): string => {
 
   return `https://resources.premierleague.com/premierleague/photos/players/110x140/p${imgId}.png`;
 };
+
+export const analysisStatistics = [
+  {
+    title: "Name",
+    selector: "name",
+  },
+  {
+    title: "Team",
+    selector: "team",
+  },
+  {
+    title: "Minutes played",
+    selector: "minutes",
+    format: true,
+  },
+  {
+    title: "Goals scored",
+    selector: "goals_scored",
+  },
+  {
+    title: "Assists",
+    selector: "assists",
+  },
+  {
+    title: "Clean sheets",
+    selector: "clean_sheets",
+  },
+  {
+    title: "Goals conceded",
+    selector: "goals_conceded",
+  },
+  {
+    title: "Own goals",
+    selector: "own_goals",
+  },
+  {
+    title: "Penalties saved",
+    selector: "penalties_saved",
+  },
+  {
+    title: "Penalties missed",
+    selector: "penalties_missed",
+  },
+  {
+    title: "Yellow cards",
+    selector: "yellow_cards",
+  },
+  {
+    title: "Red cards",
+    selector: "red_cards",
+  },
+  {
+    title: "Saves",
+    selector: "saves",
+  },
+  {
+    title: "Bonus",
+    selector: "bonus",
+  },
+  {
+    title: "Influence",
+    selector: "influence",
+  },
+  {
+    title: "Creativity",
+    selector: "creativity",
+  },
+  {
+    title: "Performance score",
+    selector: "performanceScore",
+    format: true,
+  },
+];

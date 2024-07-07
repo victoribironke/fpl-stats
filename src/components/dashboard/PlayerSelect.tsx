@@ -40,14 +40,18 @@ const PlayerSelect = () => {
         />
 
         <button
-          className="px-4 py-1 rounded-md bg-blue text-white"
+          className="px-4 py-1 rounded-lg bg-blue text-white"
           onClick={() => setShowPlayerSelect(false)}
         >
           Confirm
         </button>
       </div>
 
-      <div className="w-full mt-4 overflow-x-scroll rounded-lg border grid grid-cols-1">
+      <button className="text-red my-2" onClick={() => setSelectedPlayers([])}>
+        Clear selection
+      </button>
+
+      <div className="w-full overflow-x-scroll rounded-lg border grid grid-cols-1">
         <table className="w-full text-left rtl:text-right">
           <thead className="border-b-2">
             <tr className="bg-white">
@@ -93,7 +97,7 @@ const PlayerSelect = () => {
                   className={classNames(
                     "border-b text-sm cursor-pointer",
                     selectedPlayers.includes(f.id)
-                      ? "bg-blue bg-opacity-20"
+                      ? "bg-blue text-white"
                       : "hover:bg-gray-50 bg-white"
                   )}
                   key={i}

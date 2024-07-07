@@ -38,7 +38,6 @@ const Home = () => {
       console.log(e);
     } finally {
       setLoading(false);
-      //
     }
   };
 
