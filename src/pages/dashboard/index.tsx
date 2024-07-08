@@ -38,12 +38,12 @@ const Dashboard = () => {
       </div>
 
       <div className="w-full flex justify-center items-start gap-4 flex-col lg:flex-row-reverse">
-        <div className="w-full lg:w-7/12">
+        <div className="w-full lg:w-1/2">
           <p className="mt-4 text-lg font-medium">Transfer suggestions</p>
           <TransferSuggestions />
         </div>
 
-        <div className="w-full lg:w-5/12">
+        <div className="w-full lg:w-1/2">
           <p className="mt-4 text-lg font-medium">Gameweek history</p>
           <GWHistory data={data!} />
         </div>
