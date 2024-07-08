@@ -4,6 +4,7 @@ import {
   GWPicks,
   GeneralData,
   History,
+  Manager,
   PlayerSummary,
 } from "@/types/dashboard";
 import { useQuery } from "@tanstack/react-query";
@@ -85,6 +86,23 @@ export const useGetFixtures = () => {
     queryKey: ["getFixtures"],
     queryFn: async () => {
       const data: Fixture[] = await (
+        await fetch(isDev ? url : "/api/main", { headers: { url } })
+      ).json();
+
+      return data;
+    },
+  });
+
+  return { error, data, isLoading };
+};
+
+export const useGetManager = (id: string) => {
+  const url = ENDPOINTS.manager(id);
+
+  const { error, data, isLoading } = useQuery({
+    queryKey: ["getManager"],
+    queryFn: async () => {
+      const data: Manager = await (
         await fetch(isDev ? url : "/api/main", { headers: { url } })
       ).json();
 

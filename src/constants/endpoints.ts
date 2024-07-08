@@ -10,4 +10,5 @@ export const ENDPOINTS = {
   player_summary: (id: string) => BASE_URL + `/element-summary/${id}/`,
   general_data: BASE_URL + "/bootstrap-static/",
   fixtures: BASE_URL + "/fixtures/",
+  manager: (team_id: string) => BASE_URL + `/entry/${team_id}`,
 };

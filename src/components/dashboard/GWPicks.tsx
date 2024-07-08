@@ -4,7 +4,7 @@ import {
   player_summary,
   user_details,
 } from "@/atoms/atoms";
-import { useGetGWPicks } from "@/hooks/dashboard";
+import { useGetGWPicks, useGetManager } from "@/hooks/dashboard";
 import { GeneralData } from "@/types/dashboard";
 import { classNames, getElementDetails, getJersey } from "@/utils/helpers";
 import { IoIosArrowUp } from "react-icons/io";
@@ -14,6 +14,7 @@ const GWPicksTable = () => {
   const gw = useRecoilValue(gameweek);
   const user = useRecoilValue(user_details);
   const { data, isLoading } = useGetGWPicks(user!.team_id, gw);
+  const { data: mD, isLoading: mL } = useGetManager(user!.team_id);
   const generalData = useRecoilValue(general_data) as GeneralData;
 
   const lineup = data?.picks.map((p) => {
@@ -42,11 +43,11 @@ const GWPicksTable = () => {
   const startingXI = lineup?.slice(0, 11);
   const bench = lineup?.slice(11);
 
-  if (isLoading) return <></>;
+  if (isLoading || mL) return <></>;
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-4 overflow-x-scroll rounded-lg border grid grid-cols-1 gap-4">
-      <p className="font-medium text-lg">GW picks</p>
+      <p className="font-medium text-lg">GW picks ({mD?.name})</p>
 
       <div className="w-full pitch py-4 rounded-lg relative overflow-hidden flex items-center justify-center flex-col">
         <div className="w-full flex items-center justify-evenly py-4 gap-2 px-2 z-10">
