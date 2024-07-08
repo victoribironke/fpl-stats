@@ -51,7 +51,9 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
         <div className="w-full bg-white border-b p-4 flex items-center justify-center">
           <div className="w-full max-w-[1280px] flex gap-4 items-center justify-center">
             <div className="bg-green bg-opacity-10 text-green py-1 px-3 rounded-md">
-              GW {gw}
+              <Link href={PAGES.dashboard} className="hover:underline">
+                GW {gw}
+              </Link>
             </div>
 
             <Link href={PAGES.analysis} className="text-blue hover:underline">
