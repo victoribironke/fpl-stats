@@ -52,6 +52,7 @@ const Home = () => {
           placeholder="Team ID..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && loginAndSaveUser()}
         />
 
         <button
