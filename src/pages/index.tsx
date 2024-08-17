@@ -2,6 +2,7 @@ import HeadTemplate from "@/components/general/HeadTemplate";
 import { alreadyLoggedIn } from "@/components/hoc/ProtectedRoute";
 import { ENDPOINTS } from "@/constants/endpoints";
 import { PAGES } from "@/constants/pages";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -63,6 +64,13 @@ const Home = () => {
           Login{" "}
           {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
         </button>
+
+        <p className="text-sm text-gray-500">
+          Made by{" "}
+          <Link href="https://victoribironke.com" className="underline">
+            Victor Ibironke
+          </Link>{" "}
+        </p>
       </section>
     </>
   );
