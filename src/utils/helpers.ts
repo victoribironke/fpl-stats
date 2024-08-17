@@ -283,6 +283,16 @@ export const getJersey = (team: string, pos: Positions) => {
     spurs: { player: IMAGES.tottenham.src, gk: IMAGES.tottenham_gk.src },
     west_ham: { player: IMAGES.west_ham.src, gk: IMAGES.west_ham_gk.src },
     wolves: { player: IMAGES.wolves.src, gk: IMAGES.wolves_gk.src },
+
+    ipswich: { player: IMAGES.ipswich.src, gk: IMAGES.ipswich_gk.src },
+    leicester: {
+      player: IMAGES.leicester_city.src,
+      gk: IMAGES.leicester_city_gk.src,
+    },
+    southampton: {
+      player: IMAGES.southampton.src,
+      gk: IMAGES.southampton_gk.src,
+    },
   };
 
   const reformedTeamName = team
