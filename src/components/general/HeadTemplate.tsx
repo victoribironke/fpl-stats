@@ -10,33 +10,30 @@ const HeadTemplate = ({ title }: HeadTemplateProps) => {
       <link rel="icon" href={IMAGES.logo.src} type="image/x-icon" />
       <meta
         name="description"
-        content="A suite of tools for Babcock University students."
+        content="A statistics tool for the fantasy premier league game."
       />
       {/* <!-- Facebook Meta Tags --> */}
-      {/* <meta property="og:url" content="https://www.babcock.tools" />
+      <meta property="og:url" content="https://fpl-statistics.vercel.app" />
       <meta property="og:type" content="website" />
-      <meta property="og:title" content="Babcock Tools" />
+      <meta property="og:title" content="FPL Statistics" />
       <meta
         property="og:description"
-        content="A suite of tools for Babcock University students."
+        content="A statistics tool for the fantasy premier league game."
       />
-      <meta
-        property="og:image"
-        content="https://www.babcock.tools/images/logo.jpeg"
-      /> */}
+      <meta property="og:image" content="/og-image.png" />
       {/* <!-- Twitter Meta Tags --> */}
-      {/* <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:domain" content="www.babcock.tools" />
-      <meta property="twitter:url" content="https://www.babcock.tools" />
-      <meta name="twitter:title" content="Babcock Tools" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="twitter:domain" content="fpl-statistics.vercel.app" />
+      <meta
+        property="twitter:url"
+        content="https://fpl-statistics.vercel.app"
+      />
+      <meta name="twitter:title" content="FPL Statistics" />
       <meta
         name="twitter:description"
-        content="A suite of tools for Babcock University students."
+        content="A statistics tool for the fantasy premier league game."
       />
-      <meta
-        name="twitter:image"
-        content="https://www.babcock.tools/images/logo.jpeg"
-      /> */}
+      <meta name="twitter:image" content="/og-image.png" />
     </Head>
   );
 };

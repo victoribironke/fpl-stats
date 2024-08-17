@@ -69,7 +69,7 @@ const Home = () => {
           Made by{" "}
           <Link href="https://victoribironke.com" className="underline">
             Victor Ibironke
-          </Link>{" "}
+          </Link>
         </p>
       </section>
     </>
