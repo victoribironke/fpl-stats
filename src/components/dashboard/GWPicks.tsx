@@ -22,7 +22,7 @@ const GWPicksTable = () => {
 
     const elementDetails = getElementDetails(generalData, data, element);
     const actual_points =
-      data.active_chip === "3xc"
+      p.is_captain && data.active_chip === "3xc"
         ? parseInt(elementDetails.points ?? "0") * 3
         : p.is_captain
         ? parseInt(elementDetails.points ?? "0") * 2
@@ -116,16 +116,22 @@ const GWPicksTable = () => {
 
 const Row = ({ l }: { l: any }) => {
   const setShowPlayerSummary = useSetRecoilState(player_summary);
-  const red =
-    (l.chance_of_playing_next_round >= 0 &&
-      l.chance_of_playing_next_round <= 25) ||
-    (l.chance_of_playing_this_round >= 0 &&
-      l.chance_of_playing_this_round <= 25);
-  const yellow =
-    (l.chance_of_playing_next_round >= 50 &&
-      l.chance_of_playing_next_round <= 75) ||
-    (l.chance_of_playing_this_round >= 50 &&
-      l.chance_of_playing_this_round <= 75);
+  const areChancesReady =
+    l.chance_of_playing_next_round !== null &&
+    l.chance_of_playing_this_round !== null;
+
+  const red = areChancesReady
+    ? (l.chance_of_playing_next_round >= 0 &&
+        l.chance_of_playing_next_round <= 25) ||
+      (l.chance_of_playing_this_round >= 0 &&
+        l.chance_of_playing_this_round <= 25)
+    : false;
+  const yellow = areChancesReady
+    ? (l.chance_of_playing_next_round >= 50 &&
+        l.chance_of_playing_next_round <= 75) ||
+      (l.chance_of_playing_this_round >= 50 &&
+        l.chance_of_playing_this_round <= 75)
+    : false;
 
   return (
     <div
@@ -142,7 +148,7 @@ const Row = ({ l }: { l: any }) => {
       />
       <p
         className={classNames(
-          "w-full rounded-t-md text-xs md:text-sm text-white px-2 py-0.5 text-center whitespace-nowrap overflow-hidden text-ellipsis font-medium",
+          "w-full rounded-t-md text-xs bg-blue md:text-sm text-white px-2 py-0.5 text-center whitespace-nowrap overflow-hidden text-ellipsis font-medium",
           red ? "bg-red" : yellow ? "bg-yellow" : "bg-blue"
         )}
       >
