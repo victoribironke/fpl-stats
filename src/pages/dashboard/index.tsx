@@ -32,7 +32,7 @@ const Dashboard = () => {
     <>
       <HeadTemplate title="Dashboard" />
 
-      <div className="w-full flex justify-center items-start gap-4 flex-col lg:flex-row-reverse">
+      <div className="w-full flex justify-center gap-4 flex-col lg:flex-row-reverse">
         <TopStats data={data as History} />
         <GWPicks />
       </div>

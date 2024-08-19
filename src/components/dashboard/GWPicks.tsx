@@ -46,8 +46,13 @@ const GWPicksTable = () => {
   if (isLoading || mL) return <></>;
 
   return (
-    <div className="w-full lg:w-2/3 bg-white p-4 overflow-x-scroll rounded-lg border grid grid-cols-1 gap-4">
-      <p className="font-medium text-lg">GW picks ({mD?.name})</p>
+    <div className="w-full lg:w-3/4 bg-white p-4 overflow-x-scroll rounded-lg border grid grid-cols-1 gap-4">
+      <p className="font-medium text-lg">
+        GW picks{" "}
+        <span className="bg-blue text-white rounded py-1 px-2 text-sm ml-2">
+          {mD?.name}
+        </span>
+      </p>
 
       <div className="w-full pitch py-4 rounded-lg relative overflow-hidden flex items-center justify-center flex-col">
         <div className="w-full flex items-center justify-evenly py-4 gap-2 px-2 z-10">

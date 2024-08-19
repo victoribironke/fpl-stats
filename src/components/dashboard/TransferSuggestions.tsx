@@ -108,7 +108,7 @@ const TransferSuggestions = () => {
                 scope="col"
                 className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
               >
-                Performance score
+                Perf. score
               </th>
             </tr>
           </thead>

@@ -1,3 +1,4 @@
+import { general_data } from "@/atoms/atoms";
 import { IMAGES } from "@/constants/images";
 import {
   EvaluatedPlayer,
@@ -11,6 +12,7 @@ import {
 import { FaRankingStar, FaRegStar } from "react-icons/fa6";
 import { IoIosPerson } from "react-icons/io";
 import { MdOutlineEventSeat } from "react-icons/md";
+import { useRecoilValue } from "recoil";
 
 export const classNames = (...classes: (string | number | boolean)[]) =>
   classes.filter(Boolean).join(" ");
@@ -18,6 +20,9 @@ export const classNames = (...classes: (string | number | boolean)[]) =>
 export const formatNumber = (num: number) => num.toLocaleString("en-US");
 
 export const getTopStats = (data: History, gw: string) => {
+  const generalData = useRecoilValue(general_data) as GeneralData;
+
+  const averageScore = generalData.events[parseInt(gw) - 1].average_entry_score;
   const gwWhenBBWasUsed = data.chips.find((c) => c.name === "bboost")?.event;
   const currentGW = data.current.find((c) => c.event.toString() === gw);
   const totalPointsThisGW =
@@ -64,7 +69,11 @@ export const getTopStats = (data: History, gw: string) => {
       title: "Current points",
       value: formatNumber(totalPointsThisGW),
     },
-
+    {
+      icon: FaRegStar,
+      title: "Average points",
+      value: formatNumber(averageScore),
+    },
     {
       icon: MdOutlineEventSeat,
       title: "Points on bench",
@@ -428,6 +437,7 @@ export const suggestTransfers = (
   players: GeneralData["elements"]
 ) => {
   const evaluatedPlayers = evaluatePlayers(players);
+
   const averagePerformance = calculateAveragePerformance(
     currentTeam,
     evaluatedPlayers
@@ -436,11 +446,9 @@ export const suggestTransfers = (
     (player) => player.performanceScore > averagePerformance
   );
 
-  const suggestedTransfers: EvaluatedPlayer[] = [];
+  const suggestedTransfers: EvaluatedPlayer[] = [...goodPlayers];
 
-  suggestedTransfers.push(...goodPlayers);
-
-  return Array.from(new Set(suggestedTransfers))
+  const ac = Array.from(new Set(suggestedTransfers))
     .filter((a) => {
       // Remove players that are in their current team
       const playerInCurrentTeam = currentTeam.picks.find(
@@ -449,14 +457,15 @@ export const suggestTransfers = (
 
       if (!playerInCurrentTeam) return a;
     })
-    .sort((a, b) => b.performanceScore - a.performanceScore) // Sort by their performance score
-    .filter((a) => {
-      // Remove players that are not fit
-      return (
-        a.chance_of_playing_this_round >= 75 &&
-        a.chance_of_playing_next_round >= 75
-      );
-    });
+    .sort((a, b) => b.performanceScore - a.performanceScore); // Sort by their performance score
+  // .filter((a) => {
+  //   // Remove players that are not fit
+  //   return (
+  //     a.chance_of_playing_this_round >= 75 &&
+  //     a.chance_of_playing_next_round >= 75
+  //   );
+  // });
+  return ac;
 };
 
 export const getPlayerImageUrl = (player?: GeneralDataElement): string => {
