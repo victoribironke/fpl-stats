@@ -61,7 +61,7 @@ const Home = () => {
           disabled={loading}
           onClick={loginAndSaveUser}
         >
-          Login{" "}
+          Show me my team{" "}
           {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
         </button>
 

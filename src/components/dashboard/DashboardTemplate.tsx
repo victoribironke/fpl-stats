@@ -65,7 +65,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
               onClick={signOutUser}
             >
               <TbLogout2 className="sm:hidden text-lg" />
-              <p className="hidden sm:block text-sm">Log out</p>
+              <p className="hidden sm:block text-sm">Switch team</p>
             </button>
           </div>
         </div>
