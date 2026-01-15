@@ -495,14 +495,17 @@ export const analysisStatistics = [
   {
     title: "Goals scored",
     selector: "goals_scored",
+    poissonEligible: true,
   },
   {
     title: "Assists",
     selector: "assists",
+    poissonEligible: true,
   },
   {
     title: "Clean sheets",
     selector: "clean_sheets",
+    poissonEligible: true,
   },
   {
     title: "Goals conceded",
@@ -515,6 +518,7 @@ export const analysisStatistics = [
   {
     title: "Penalties saved",
     selector: "penalties_saved",
+    poissonEligible: true,
   },
   {
     title: "Penalties missed",
@@ -531,10 +535,12 @@ export const analysisStatistics = [
   {
     title: "Saves",
     selector: "saves",
+    poissonEligible: true,
   },
   {
     title: "Bonus",
     selector: "bonus",
+    poissonEligible: true,
   },
   {
     title: "Influence",
@@ -550,3 +556,53 @@ export const analysisStatistics = [
     format: true,
   },
 ];
+
+// Poisson probability functions for player statistics
+
+/**
+ * Calculate the average of a stat over the last N matches
+ */
+export const calculateRecentAverage = (
+  history: PlayerSummary["history"],
+  stat: keyof PlayerSummary["history"][0],
+  lastNMatches: number
+): number => {
+  const recentMatches = history.slice(-lastNMatches);
+  if (recentMatches.length === 0) return 0;
+
+  const sum = recentMatches.reduce((acc, match) => {
+    const value = match[stat];
+    return acc + (typeof value === "number" ? value : 0);
+  }, 0);
+
+  return sum / recentMatches.length;
+};
+
+/**
+ * Calculate the probability of at least one occurrence using Poisson distribution
+ * P(X >= 1) = 1 - P(X = 0) = 1 - e^(-λ)
+ */
+export const poissonProbabilityAtLeastOne = (lambda: number): number => {
+  if (lambda <= 0) return 0;
+  return 1 - Math.exp(-lambda);
+};
+
+/**
+ * Get the probability of a player increasing a stat in the next match
+ * based on their recent form over the last N matches
+ */
+export const getStatIncreaseProbability = (
+  history: PlayerSummary["history"],
+  stat: keyof PlayerSummary["history"][0],
+  lastNMatches: number
+): number => {
+  const lambda = calculateRecentAverage(history, stat, lastNMatches);
+  return poissonProbabilityAtLeastOne(lambda);
+};
+
+/**
+ * Format probability as a percentage string
+ */
+export const formatProbability = (probability: number): string => {
+  return `${Math.round(probability * 100)}%`;
+};

@@ -79,6 +79,34 @@ export const useGetPlayerSummary = (id: string) => {
   return { error, data, isLoading, isFetching };
 };
 
+export const useGetMultiplePlayerSummaries = (playerIds: number[]) => {
+  const { error, data, isLoading, isFetching } = useQuery({
+    queryKey: ["getMultiplePlayerSummaries", playerIds],
+    queryFn: async () => {
+      const summaries = await Promise.all(
+        playerIds.map(async (id) => {
+          const url = ENDPOINTS.player_summary(id.toString());
+          const data: PlayerSummary = await (
+            await fetch(isDev ? url : "/api/main", { headers: { url } })
+          ).json();
+          return { id, summary: data };
+        })
+      );
+
+      return summaries.reduce(
+        (acc, { id, summary }) => {
+          acc[id] = summary;
+          return acc;
+        },
+        {} as Record<number, PlayerSummary>
+      );
+    },
+    enabled: playerIds.length > 0,
+  });
+
+  return { error, data, isLoading, isFetching };
+};
+
 export const useGetFixtures = () => {
   const url = ENDPOINTS.fixtures;
 
