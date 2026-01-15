@@ -4,6 +4,7 @@ const BASE_URL =
 export const IMAGES = {
   logo: { src: "/logo.png", w: 32, h: 32 },
   pitch: { src: "/pitch.png", w: 1400, h: 1547 },
+  team_id: { src: "/team-id.png", w: 2816, h: 1536 },
   arsenal_gk: { src: BASE_URL + "3_1-110.webp", w: 110, h: 145 },
   arsenal: { src: BASE_URL + "3-110.webp", w: 110, h: 145 },
   aston_villa_gk: { src: BASE_URL + "7_1-110.webp", w: 110, h: 145 },

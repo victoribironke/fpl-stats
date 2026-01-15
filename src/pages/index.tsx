@@ -1,7 +1,9 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { alreadyLoggedIn } from "@/components/hoc/ProtectedRoute";
 import { ENDPOINTS } from "@/constants/endpoints";
+import { IMAGES } from "@/constants/images";
 import { PAGES } from "@/constants/pages";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -47,6 +49,14 @@ const Home = () => {
       <HeadTemplate title="Home" />
 
       <section className="w-full flex items-center justify-center min-h-screen flex-col gap-4">
+        <Image
+          src={IMAGES.team_id.src}
+          width={IMAGES.team_id.w}
+          height={IMAGES.team_id.h}
+          alt="Team ID Help"
+          className="max-w-lg rounded-lg"
+        />
+
         <input
           type="text"
           className="w-full border-2 border-blue rounded-lg px-3 py-2 outline-none max-w-lg"
